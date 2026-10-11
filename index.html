@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>USA Map — States, Major Cities & Live Time Zones</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="map" aria-label="Map of the United States with states, cities and time zones"></div>
+
+<header id="topbar">
+  <div class="title-block">
+    <h1>United States — Live Time Zones</h1>
+    <p id="utc-clock" title="Current UTC time">UTC --:--:--</p>
+  </div>
+  <div id="tz-clocks" aria-live="polite"></div>
+</header>
+
+<div id="legend" class="panel">
+  <h2>Time zones <span id="live-dot" title="Live"></span></h2>
+  <ul id="legend-list"></ul>
+  <p class="note">State colors = primary zone. Hatched = state spans two zones — check city times for exact local time.</p>
+  <p class="note small">State shapes: Natural Earth / US Census via PublicaMundi. Base map: © OpenStreetMap © CARTO. Times via your browser (IANA zones, DST-aware).</p>
+</div>
+
+<div id="search-panel" class="panel">
+  <input id="city-search" type="search" placeholder="Search major city…" aria-label="Search major city" />
+  <ul id="search-results"></ul>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="app.js"></script>
+</body>
+</html>
