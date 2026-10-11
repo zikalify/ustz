@@ -26,6 +26,6 @@ Then: repo → **Settings → Pages → Deploy from a branch → main / (root)**
 
 ## Accuracy
 
-- **State shapes**: `us-states.json` (Natural Earth geometry via PublicaMundi, WGS84) drawn over a CARTO/OpenStreetMap base map.
+- **State shapes**: `us-states.json` (Natural Earth geometry via PublicaMundi, WGS84) drawn on a plain background — no tile server, no API key, works offline.
 - **Cities**: ~60 major cities with Census/GNIS lat/lon (4dp, city center), each tagged with its correct IANA zone — so split states (FL, TX, TN, KY, IN, ID, …) still show the exact local time per city.
 - **Times**: browser `Intl.DateTimeFormat` with IANA zones (`America/New_York`, `America/Chicago`, `America/Denver`, `America/Los_Angeles`, `America/Anchorage`, `Pacific/Honolulu`, plus `America/Phoenix`, `America/Indiana/Indianapolis`, …). DST handled automatically (including Arizona/Hawaii no-DST). Ticks every second.

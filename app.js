@@ -1,18 +1,18 @@
 /* USA full-viewport map: accurate states + cities + live time zones.
    Sources:
    - State polygons: ./us-states.json (Natural Earth via PublicaMundi, WGS84)
-   - Base tiles: CARTO Positron (© OpenStreetMap contributors © CARTO)
+   - No tile layer: plain ocean background, fully self-contained, no API key
    - City coords: US Census / GNIS (WGS84, 4dp)
    - Times: browser Intl API with IANA zones (DST-aware, correct "now")
 */
 
 const TIME_ZONES = [
-  { id: "eastern",  label: "Eastern",  iana: "America/New_York", color: "#eab308", abbr: "ET" },
-  { id: "central",  label: "Central",  iana: "America/Chicago",  color: "#0284c7", abbr: "CT" },
-  { id: "mountain", label: "Mountain", iana: "America/Denver",   color: "#c2410c", abbr: "MT" },
-  { id: "pacific",  label: "Pacific",  iana: "America/Los_Angeles", color: "#15803d", abbr: "PT" },
-  { id: "alaska",   label: "Alaska",   iana: "America/Anchorage", color: "#dc2626", abbr: "AKT" },
   { id: "hawaii",   label: "Hawaii",   iana: "Pacific/Honolulu",  color: "#0d9488", abbr: "HT" },
+  { id: "alaska",   label: "Alaska",   iana: "America/Anchorage", color: "#dc2626", abbr: "AKT" },
+  { id: "pacific",  label: "Pacific",  iana: "America/Los_Angeles", color: "#15803d", abbr: "PT" },
+  { id: "mountain", label: "Mountain", iana: "America/Denver",   color: "#c2410c", abbr: "MT" },
+  { id: "central",  label: "Central",  iana: "America/Chicago",  color: "#0284c7", abbr: "CT" },
+  { id: "eastern",  label: "Eastern",  iana: "America/New_York", color: "#eab308", abbr: "ET" },
 ];
 const TZ_BY_ID = Object.fromEntries(TIME_ZONES.map(t => [t.id, t]));
 
@@ -128,20 +128,16 @@ function fmtDate(iana) {
   return new Intl.DateTimeFormat("en-US", { timeZone: iana, weekday: "short", month: "short", day: "numeric" }).format(new Date());
 }
 
-// ---------- map ----------
-const map = L.map("map", { zoomControl: false, worldCopyJump: true, zoomSnap: 0.5 }).setView([39.8, -98.5], 4);
+// ---------- map (no tile layer — self-contained US shapes only, no API key needed) ----------
+const map = L.map("map", { zoomControl: false, worldCopyJump: false, zoomSnap: 0.5, attributionControl: true }).setView([39.8, -98.5], 4);
 L.control.zoom({ position: "bottomright" }).addTo(map);
-
-L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-  maxZoom: 12, minZoom: 3,
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-}).addTo(map);
+map.attributionControl.addAttribution("State shapes: Natural Earth via PublicaMundi");
 
 function stateStyle(feature) {
   const info = STATE_TZ[feature.properties.name] || { tz: "central" };
   const base = TZ_BY_ID[info.tz] ? TZ_BY_ID[info.tz].color : "#94a3b8";
   return {
-    fillColor: base, fillOpacity: info.split ? 0.45 : 0.38,
+    fillColor: base, fillOpacity: info.split ? 0.8 : 0.7,
     color: info.split ? "#111827" : "#ffffff",
     weight: info.split ? 2 : 1.2,
     dashArray: info.split ? "5 3" : null,
